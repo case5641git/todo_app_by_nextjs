@@ -15,6 +15,17 @@ export default async function signUp({
     throw new Error("メールアドレスとパスワードは必須です。");
   }
 
+  // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    throw new Error("有効なメールアドレスを入力してください。");
+  }
+
+  // Validate password strength (minimum 8 characters)
+  if (password.length < 8) {
+    throw new Error("パスワードは8文字以上である必要があります。");
+  }
+
   const existingUser = await prisma.user.findUnique({
     where: { email: email },
   });
@@ -28,7 +39,7 @@ export default async function signUp({
   try {
     await prisma.user.create({
       data: {
-        email: email,
+        email,
         password: hashedPassword,
       },
     });

@@ -11,8 +11,8 @@ export const SignUp: React.FC = () => {
   const handleSignUp = async (formData: FormData) => {
     startTransition(async () => {
       await signUp({
-        email: formData.get("email") as string,
-        password: formData.get("password") as string,
+        email: formData.get("email")?.toString() || "",
+        password: formData.get("password")?.toString() || "",
       })
         .then(() => {
           router.push("/todo");
@@ -38,18 +38,20 @@ export const SignUp: React.FC = () => {
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form action={handleSignUp}>
         <div>
-          <label htmlFor="">email</label>
+          <label htmlFor="email">email</label>
           <input
+            id="email"
             name="email"
             type="text"
             style={{ border: "1px solid #ccc", width: "100%" }}
           />
         </div>
         <div>
-          <label htmlFor="">password</label>
+          <label htmlFor="password">password</label>
           <input
+            id="password"
             name="password"
-            type="text"
+            type="password"
             style={{ border: "1px solid #ccc", width: "100%" }}
           />
         </div>
